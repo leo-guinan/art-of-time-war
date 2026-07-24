@@ -12,7 +12,7 @@
     <a class="wordmark" href="/">ENTROPY PRESS</a>
     <nav aria-label="Primary navigation">
       <a href="/">Home</a>
-      <a class="nav-cta" href="https://hitchhikersguidetothefuture.com/" target="_blank" rel="noopener">Get full access ↗</a>
+      <a class="nav-cta" href="https://hitchhikertothefuture.substack.com" target="_blank" rel="noopener">Support on Substack ↗</a>
     </nav>
   </header>
 
@@ -22,38 +22,48 @@
       <h1>The Art<br>of Time War</h1>
       <p class="toc-note">A meta-commentary on Sun Tzu by Leo Guinan.</p>
       <ol>
-        <li><a class="free" href="#chapter-1">The Calculation of Aliveness</a></li>
-        <li><a href="#chapter-2">The Cost of the Campaign</a></li>
-        <li><a href="#chapter-3">The Battle That Never Happens</a></li>
-        <li><a href="#chapter-4">The Fortress That Does Not Need to Win</a></li>
-        <li><a href="#chapter-5">The Shape of Force</a></li>
-        <li><a href="#chapter-6">The Edge of the Map</a></li>
-        <li><a href="#chapter-7">The Cost of Moving Together</a></li>
-        <li><a href="#chapter-8">Rules That Know Their Limits</a></li>
-        <li><a href="#chapter-9">Reading the Weather</a></li>
-        <li><a href="#chapter-10">The Ground Has Opinions</a></li>
-        <li><a href="#chapter-11">Nine Ways to Be Stuck</a></li>
-        <li><a href="#chapter-12">Fire Is Not a Strategy</a></li>
-        <li><a href="#chapter-13">The Scout Who Returns</a></li>
-        <li><a href="#coda">Coda: The War Continues</a></li>
+        <li><a class="free" href="?chapter=1">The Calculation of Aliveness</a></li>
+        <li><a href="?chapter=2">The Cost of the Campaign</a></li>
+        <li><a href="?chapter=3">The Battle That Never Happens</a></li>
+        <li><a href="?chapter=4">The Fortress That Does Not Need to Win</a></li>
+        <li><a href="?chapter=5">The Shape of Force</a></li>
+        <li><a href="?chapter=6">The Edge of the Map</a></li>
+        <li><a href="?chapter=7">The Cost of Moving Together</a></li>
+        <li><a href="?chapter=8">Rules That Know Their Limits</a></li>
+        <li><a href="?chapter=9">Reading the Weather</a></li>
+        <li><a href="?chapter=10">The Ground Has Opinions</a></li>
+        <li><a href="?chapter=11">Nine Ways to Be Stuck</a></li>
+        <li><a href="?chapter=12">Fire Is Not a Strategy</a></li>
+        <li><a href="?chapter=13">The Scout Who Returns</a></li>
+        <li><a href="?chapter=coda">Coda: The War Continues</a></li>
       </ol>
     </aside>
 
     <article class="reader" id="reader-content">
-      <div class="locked-panel"><p class="eyebrow">Reader’s note</p><h2>The whole book is here.</h2><p>The paywall remains visible because the work deserves support. It is not a lock. If a reader cannot afford the platform or subscription, they can still read. We both win when the book travels.</p><a class="button" href="https://hitchhikersguidetothefuture.com/" target="_blank" rel="noopener">Support the press ↗</a></div>
+      <p class="eyebrow">Loading chapter</p>
+      <p>One moment. The bureaucracy of reading is almost complete.</p>
     </article>
   </main>
 
   <script>
     const content = document.querySelector('#reader-content');
-    const chapter = new URLSearchParams(location.search).get('chapter');
+    const chapter = new URLSearchParams(location.search).get('chapter') || '1';
     fetch('content/book.html', {cache: 'no-store'})
       .then(response => { if (!response.ok) throw new Error('Book unavailable'); return response.text(); })
       .then(html => {
-        content.insertAdjacentHTML('beforeend', html);
-        if (chapter) document.getElementById(chapter === 'coda' ? 'coda' : `chapter-${CSS.escape(chapter)}`)?.scrollIntoView();
+        const documentFragment = new DOMParser().parseFromString(html, 'text/html');
+        const sections = [...documentFragment.querySelectorAll('.book-chapter')];
+        const targetId = chapter === 'coda' ? 'coda' : `chapter-${CSS.escape(chapter)}`;
+        const selected = documentFragment.getElementById(targetId);
+        if (!selected) throw new Error('Chapter unavailable');
+        const position = sections.indexOf(selected);
+        const previous = sections[position - 1];
+        const next = sections[position + 1];
+        const link = section => section ? `?chapter=${section.id === 'coda' ? 'coda' : section.id.replace('chapter-', '')}` : '';
+        content.innerHTML = `<div class="locked-panel"><p class="eyebrow">Reader’s note</p><h2>This chapter is open.</h2><p>The support boundary is visible because the work deserves support. It is not a lock. If you cannot afford the platform or subscription, you can still read.</p><a class="button" href="https://hitchhikertothefuture.substack.com" target="_blank" rel="noopener">Support the book on Substack ↗</a></div>${selected.outerHTML}<nav class="chapter-nav" aria-label="Chapter navigation">${previous ? `<a href="${link(previous)}">← Previous</a>` : '<span></span>'}${next ? `<a href="${link(next)}">Next →</a>` : '<span></span>'}</nav>`;
+        document.title = `${selected.querySelector('h2').textContent} — The Art of Time War`;
       })
-      .catch(() => { content.insertAdjacentHTML('beforeend', '<div class="locked-panel"><h2>The book failed to load.</h2><p>Nothing is wrong with your browser. The public artifact is missing a file.</p></div>'); });
+      .catch(() => { content.innerHTML = '<div class="locked-panel"><h2>The chapter failed to load.</h2><p>Nothing is wrong with your browser. The public artifact is missing a file.</p></div>'; });
   </script>
 </body>
 </html>

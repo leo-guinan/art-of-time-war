@@ -15,6 +15,8 @@ The complete manuscript is included in `content/book.html`. The paywall is visib
 
 This is deliberate readership-first publishing. A reader who cannot afford the platform or subscription should still be able to read the work.
 
+Support link: https://hitchhikertothefuture.substack.com
+
 ## Local preview
 
 ```bash
