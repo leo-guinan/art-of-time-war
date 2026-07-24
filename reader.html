@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Read The Art of Time War. Chapter One is free; the remaining chapters are for paid Hitchhiker’s Guide subscribers.">
+  <title>Read The Art of Time War — Entropy Press</title>
+  <link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+  <header class="shell masthead">
+    <a class="wordmark" href="/">ENTROPY PRESS</a>
+    <nav aria-label="Primary navigation">
+      <a href="/">Home</a>
+      <a class="nav-cta" href="https://hitchhikersguidetothefuture.com/" target="_blank" rel="noopener">Get full access ↗</a>
+    </nav>
+  </header>
+
+  <main class="shell reader-layout">
+    <aside class="toc" aria-label="Table of contents">
+      <p class="eyebrow">Field Manual 001</p>
+      <h1>The Art<br>of Time War</h1>
+      <p class="toc-note">A meta-commentary on Sun Tzu by Leo Guinan.</p>
+      <ol>
+        <li><a class="free" href="?chapter=1">The Calculation of Aliveness <small>FREE</small></a></li>
+        <li><span>The Cost of the Campaign</span></li>
+        <li><span>The Battle That Never Happens</span></li>
+        <li><span>The Fortress That Does Not Need to Win</span></li>
+        <li><span>The Shape of Force</span></li>
+        <li><span>The Edge of the Map</span></li>
+        <li><span>The Cost of Moving Together</span></li>
+        <li><span>Rules That Know Their Limits</span></li>
+        <li><span>Reading the Weather</span></li>
+        <li><span>The Ground Has Opinions</span></li>
+        <li><span>Nine Ways to Be Stuck</span></li>
+        <li><span>Fire Is Not a Strategy</span></li>
+        <li><span>The Scout Who Returns</span></li>
+      </ol>
+    </aside>
+
+    <article class="reader" id="reader-content">
+      <p class="eyebrow">Loading chapter</p>
+      <p>One moment. The bureaucracy of reading is almost complete.</p>
+    </article>
+  </main>
+
+  <script>
+    const content = document.querySelector('#reader-content');
+    const chapter = new URLSearchParams(location.search).get('chapter') || '1';
+    if (chapter !== '1') {
+      content.innerHTML = `<div class="locked-panel"><p class="eyebrow">Subscriber chapter</p><h2>This chapter is behind the gate.</h2><p>Chapters 2–13 are available to paid subscribers of Hitchhiker’s Guide to the Future. The chapter text is not shipped to this public page. That is the point of a gate.</p><a class="button" href="https://hitchhikersguidetothefuture.com/" target="_blank" rel="noopener">Join the Guide <span>↗</span></a><p class="fine">Already subscribed? Use the subscriber reading link from Hitchhiker’s Guide to return here. Entitlement verification will be wired to the Guide’s membership endpoint once its contract is supplied.</p></div>`;
+    } else {
+      fetch('content/chapter-1.html', {cache: 'no-store'})
+        .then(response => { if (!response.ok) throw new Error('Chapter unavailable'); return response.text(); })
+        .then(html => { content.innerHTML = html; })
+        .catch(() => { content.innerHTML = '<div class="locked-panel"><h2>The free chapter failed to load.</h2><p>Nothing is wrong with your browser. The public artifact is missing a file.</p></div>'; });
+    }
+  </script>
+</body>
+</html>
