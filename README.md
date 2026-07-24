@@ -7,12 +7,13 @@ Live target: https://war.entropypress.xyz
 ## Site
 
 - `/` — Entropy Press landing page
-- `/reader.html?chapter=1` — free Chapter 1
-- `/reader.html?chapter=2` through `/reader.html?chapter=13` — subscriber gate
+- `/reader.html` — complete book reader
+- `/reader.html?chapter=1` through `?chapter=13` — deep links into each chapter
+- `/reader.html?chapter=coda` — deep link to the coda
 
-Only Chapter 1 is included in this static repository. The paid chapters are deliberately not shipped to the public artifact. A client-side unlock would be theatre wearing a security badge.
+The complete manuscript is included in `content/book.html`. The paywall is visible but non-enforcing: readers can read the whole book without subscribing, while the site still offers a clear route to support the press.
 
-Paid access still requires a production entitlement boundary: a canonical Hitchhiker’s Guide checkout/login URL, a verified subscriber session or signed reader token, and a server-side chapter delivery endpoint.
+This is deliberate readership-first publishing. A reader who cannot afford the platform or subscription should still be able to read the work.
 
 ## Local preview
 

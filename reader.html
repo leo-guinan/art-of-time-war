@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Read The Art of Time War. Chapter One is free; the remaining chapters are for paid Hitchhiker’s Guide subscribers.">
+  <meta name="description" content="Read the complete edition of The Art of Time War from Entropy Press.">
   <title>Read The Art of Time War — Entropy Press</title>
   <link rel="stylesheet" href="/assets/site.css">
 </head>
@@ -22,39 +22,38 @@
       <h1>The Art<br>of Time War</h1>
       <p class="toc-note">A meta-commentary on Sun Tzu by Leo Guinan.</p>
       <ol>
-        <li><a class="free" href="?chapter=1">The Calculation of Aliveness <small>FREE</small></a></li>
-        <li><span>The Cost of the Campaign</span></li>
-        <li><span>The Battle That Never Happens</span></li>
-        <li><span>The Fortress That Does Not Need to Win</span></li>
-        <li><span>The Shape of Force</span></li>
-        <li><span>The Edge of the Map</span></li>
-        <li><span>The Cost of Moving Together</span></li>
-        <li><span>Rules That Know Their Limits</span></li>
-        <li><span>Reading the Weather</span></li>
-        <li><span>The Ground Has Opinions</span></li>
-        <li><span>Nine Ways to Be Stuck</span></li>
-        <li><span>Fire Is Not a Strategy</span></li>
-        <li><span>The Scout Who Returns</span></li>
+        <li><a class="free" href="#chapter-1">The Calculation of Aliveness</a></li>
+        <li><a href="#chapter-2">The Cost of the Campaign</a></li>
+        <li><a href="#chapter-3">The Battle That Never Happens</a></li>
+        <li><a href="#chapter-4">The Fortress That Does Not Need to Win</a></li>
+        <li><a href="#chapter-5">The Shape of Force</a></li>
+        <li><a href="#chapter-6">The Edge of the Map</a></li>
+        <li><a href="#chapter-7">The Cost of Moving Together</a></li>
+        <li><a href="#chapter-8">Rules That Know Their Limits</a></li>
+        <li><a href="#chapter-9">Reading the Weather</a></li>
+        <li><a href="#chapter-10">The Ground Has Opinions</a></li>
+        <li><a href="#chapter-11">Nine Ways to Be Stuck</a></li>
+        <li><a href="#chapter-12">Fire Is Not a Strategy</a></li>
+        <li><a href="#chapter-13">The Scout Who Returns</a></li>
+        <li><a href="#coda">Coda: The War Continues</a></li>
       </ol>
     </aside>
 
     <article class="reader" id="reader-content">
-      <p class="eyebrow">Loading chapter</p>
-      <p>One moment. The bureaucracy of reading is almost complete.</p>
+      <div class="locked-panel"><p class="eyebrow">Reader’s note</p><h2>The whole book is here.</h2><p>The paywall remains visible because the work deserves support. It is not a lock. If a reader cannot afford the platform or subscription, they can still read. We both win when the book travels.</p><a class="button" href="https://hitchhikersguidetothefuture.com/" target="_blank" rel="noopener">Support the press ↗</a></div>
     </article>
   </main>
 
   <script>
     const content = document.querySelector('#reader-content');
-    const chapter = new URLSearchParams(location.search).get('chapter') || '1';
-    if (chapter !== '1') {
-      content.innerHTML = `<div class="locked-panel"><p class="eyebrow">Subscriber chapter</p><h2>This chapter is behind the gate.</h2><p>Chapters 2–13 are available to paid subscribers of Hitchhiker’s Guide to the Future. The chapter text is not shipped to this public page. That is the point of a gate.</p><a class="button" href="https://hitchhikersguidetothefuture.com/" target="_blank" rel="noopener">Join the Guide <span>↗</span></a><p class="fine">Already subscribed? Use the subscriber reading link from Hitchhiker’s Guide to return here. Entitlement verification will be wired to the Guide’s membership endpoint once its contract is supplied.</p></div>`;
-    } else {
-      fetch('content/chapter-1.html', {cache: 'no-store'})
-        .then(response => { if (!response.ok) throw new Error('Chapter unavailable'); return response.text(); })
-        .then(html => { content.innerHTML = html; })
-        .catch(() => { content.innerHTML = '<div class="locked-panel"><h2>The free chapter failed to load.</h2><p>Nothing is wrong with your browser. The public artifact is missing a file.</p></div>'; });
-    }
+    const chapter = new URLSearchParams(location.search).get('chapter');
+    fetch('content/book.html', {cache: 'no-store'})
+      .then(response => { if (!response.ok) throw new Error('Book unavailable'); return response.text(); })
+      .then(html => {
+        content.insertAdjacentHTML('beforeend', html);
+        if (chapter) document.getElementById(chapter === 'coda' ? 'coda' : `chapter-${CSS.escape(chapter)}`)?.scrollIntoView();
+      })
+      .catch(() => { content.insertAdjacentHTML('beforeend', '<div class="locked-panel"><h2>The book failed to load.</h2><p>Nothing is wrong with your browser. The public artifact is missing a file.</p></div>'); });
   </script>
 </body>
 </html>
